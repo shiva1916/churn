@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[4]:
-
 
 import pandas as pd
 
@@ -13,42 +11,24 @@ df = pd.read_csv("WA_Fn-UseC_-Telco-Customer-Churn.csv")
 df.head()
 
 
-# In[6]:
-
-
 # Basic info: datatypes, non-null counts
 df.info()
-
-
-# In[8]:
 
 
 # Summary stats for numerical features
 df.describe()
 
 
-# In[10]:
-
-
 # Check for missing values
 df.isnull().sum()
-
-
-# In[12]:
 
 
 # Count of churned vs not churned customers
 df['Churn'].value_counts()
 
 
-# In[14]:
-
-
 # Percentage of churn
 df['Churn'].value_counts(normalize=True) * 100
-
-
-# In[16]:
 
 
 import seaborn as sns
@@ -58,9 +38,6 @@ import matplotlib.pyplot as plt
 sns.countplot(x='Churn', data=df)
 plt.title('Customer Churn Distribution')
 plt.show()
-
-
-# In[18]:
 
 
 # Convert TotalCharges to numeric (some entries might be empty strings)
@@ -73,13 +50,9 @@ print(df['TotalCharges'].isnull().sum())
 df = df[df['TotalCharges'].notnull()]
 
 
-# In[20]:
-
 
 df.drop('customerID', axis=1, inplace=True)
 
-
-# In[22]:
 
 
 # Convert 'Yes'/'No' to 1/0
@@ -97,9 +70,6 @@ df['gender'] = df['gender'].map({'Male': 1, 'Female': 0})
 df = pd.get_dummies(df, drop_first=True)
 
 
-# In[24]:
-
-
 from sklearn.model_selection import train_test_split
 
 X = df.drop('Churn', axis=1)
@@ -107,8 +77,6 @@ y = df['Churn']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
-
-# In[26]:
 
 
 from sklearn.linear_model import LogisticRegression
@@ -122,9 +90,6 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 
 
-# In[28]:
-
-
 # Accuracy
 print("Accuracy:", accuracy_score(y_test, y_pred))
 
@@ -134,8 +99,6 @@ print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
 # Classification Report
 print("Classification Report:\n", classification_report(y_test, y_pred))
 
-
-# In[30]:
 
 
 import seaborn as sns
@@ -148,8 +111,6 @@ plt.xlabel("Predicted")
 plt.ylabel("Actual")
 plt.show()
 
-
-# In[34]:
 
 
 from sklearn.ensemble import RandomForestClassifier
@@ -166,9 +127,6 @@ y_pred_rf = rf.predict(X_test)
 print("Random Forest Accuracy:", accuracy_score(y_test, y_pred_rf))
 print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred_rf))
 print("Classification Report:\n", classification_report(y_test, y_pred_rf))
-
-
-# In[36]:
 
 
 import pandas as pd
